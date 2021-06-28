@@ -1,0 +1,69 @@
+@{
+    ViewData["Title"] = "Lista de Produtos";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3>Lista de Produtos</h3>
+    </div>
+    <div class="card-body">
+        <a href="products/Add"><button type="button" class="btn btn-outline-primary">+ Adicionar</button></a>
+    </div>
+</div>
+<br>
+
+<table width="100%" id="lista">
+    <thead>
+        <tr>
+            <th bgcolor="#33adff">Codigo</th>
+            <th bgcolor="#33adff" colspan="3">Nome</th>
+        </tr>
+    </thead>
+    <tbody>
+
+
+    </tbody>
+</table>
+
+@section Scripts {
+
+<script>
+
+    $(document).ready(function () {
+        LoadProdutos();
+    })
+
+    function LoadProdutos() {
+        $("#lista > tbody").empty();
+
+        axios.get('https://localhost:60001/produto/getprodutos')
+            .then(function (response) {
+                response.data.forEach(a => {
+                    console.log(a);
+                    $("#lista > tbody").append(`<tr><td>${a.id}</td><td>${a.nome}</td><td><a class="btn btn-outline-primary" href="products/edit?id=${a.id}">Editar</a></td><td><a class="btn btn-outline-danger" href="javascript:Excluir(${a.id})">Excluir</a></td></tr>`)
+                })
+            })
+            .catch(function (error) {
+                alert('Verifique se a api esta funcionando')
+                console.log(error);
+            })
+    }
+
+    function Excluir(id) {
+        let result = confirm("Deseja Excluir o Item?");
+
+        if (result) {
+            axios.delete('https://localhost:60001/produto/' + id)
+                .then(function (response) {
+                    LoadProdutos();
+                })
+                .catch(function (error) {
+                    // handle error
+                    alert('Verifique se a api esta funcionando')
+                    console.log(error);
+                })
+        }
+    }
+</script>
+
+}

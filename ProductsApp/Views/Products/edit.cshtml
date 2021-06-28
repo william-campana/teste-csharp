@@ -70,7 +70,7 @@
 
     });
 
-    $(document).on('click', '#btnCancelar', function(e) {
+    $(document).on('click', '#btnCancelar', function (e) {
         window.location.href = "/products"
     });
 
@@ -83,19 +83,21 @@
             preco: $("#Preco").val()
         }
 
-        axios.put('https://localhost:60001/produto/' + idProduto, data)
-            .then(function (response) {
+        if ((data.nome == "") || (data.estoque == "") || (data.preco == "")) {
+            alert("Favor preencher todos os campos.");
+        } else {
+            axios.put('https://localhost:60001/produto/' + idProduto, data)
+                    .then(function (response) {
+                        alert('Alteração efetuada com sucesso')
+                        window.location.href = "/products"
+                    })
+                    .catch(function (error) {
+                        alert('Verifique se a api esta funcionando')
+                        console.log(error);
+                    })
 
-                alert('Alteração efetuada com sucesso')
-                window.location.href = "/products"
-
-            })
-            .catch(function (error) {
-                alert('Verifique se a api esta funcionando')
-                console.log(error);
-            })
-
-    })
+        }
+    });
 
 
     function loadProduto() {

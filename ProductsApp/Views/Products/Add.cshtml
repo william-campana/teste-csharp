@@ -75,7 +75,9 @@
             preco: $("#Preco").val()
         }
 
-        if (data.name != "") {
+        if ((data.nome == "") || (data.estoque == "") || (data.preco == "")) {
+            alert("Favor preencher todos os campos.");
+        } else {
             axios.post('https://localhost:60001/produto', data)
                 .then(function (response) {
 
@@ -87,11 +89,9 @@
                     alert('Verifique se a api esta funcionando')
                     console.log(error);
                 })
-        } else {
-            alert("Favor preencher a Descrição.");
         }
 
-    })
+    });
 
 </script>
 
